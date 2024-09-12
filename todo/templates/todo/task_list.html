@@ -1,0 +1,26 @@
+<!-- todo/templates/todo/task_list.html -->
+
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <h2>タスク一覧</h2>
+    <a href="{% url 'task_create' %}" class="btn">新規タスク作成</a>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {% if task.image %}
+                    <img src="{{ task.image.url }}" alt="{{ task.title }}" style="width: 50px; height: 50px; object-fit: cover;">
+                {% endif %}
+                <a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a>
+                {% if task.completed %} (完了) {% else %} (未完了) {% endif %}
+                <form method="post" action="{% url 'task_toggle_complete' task.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">
+                        {% if task.completed %} 未完了にする {% else %} 完了にする {% endif %}
+                    </button>
+                </form>
+                <a href="{% url 'task_edit' task.pk %}" class="btn">編集</a> <!-- 編集ボタンを追加 -->
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
