@@ -1,0 +1,28 @@
+<!-- todo/templates/todo/task_edit.html -->
+
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <h2>{% if form.instance.pk %}タスク編集{% else %}新規タスク作成{% endif %}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.title.label_tag }} {{ form.title }}
+        </div>
+        <div class="form-group">
+            {{ form.description.label_tag }} {{ form.description }}
+        </div>
+        <div class="form-group">
+            {{ form.completed.label_tag }} {{ form.completed }}
+        </div>
+        <div class="form-group">
+            {{ form.image.label_tag }}
+            {% if form.instance.image %}
+                <p>アップロード済み: <a href="{{ form.instance.image.url }}">{{ form.instance.image.name }}</a></p>
+            {% endif %}
+            {{ form.image }}
+        </div>
+        <button type="submit" class="btn">保存</button>
+    </form>
+    <a href="{% url 'task_list' %}" class="btn">一覧に戻る</a>
+{% endblock %}
