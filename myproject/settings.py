@@ -19,7 +19,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vhzoln#cj)$7_4(zyzk6%hn13pf!knj$f-ec$fnz3ia_q79&1v'
+
+try:
+    from .local_settings import *
+    DEBUG = True
+    FRONTEND_URL = 'http://127.0.0.1:8000/'
+    ALLOWED_HOSTS = []
+
+except ImportError:
+    DEBUG = False
+    SECRET_KEY = get_random_secret_key()
+    ALLOWED_HOSTS = ['.pythonanywhere.com']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -127,3 +137,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 既存の静的ファイル設定の下に追加
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
